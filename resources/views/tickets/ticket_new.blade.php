@@ -66,13 +66,13 @@
 	</style>
 </head>
 <body>
-	<img class="imagen" src="https://i.ibb.co/j8KbKNV/logo.png" width="100%" height="20px">
+	<img class="imagen" src="{{ storage_path('app/public/logo.png') }}" width="100%" height="20px">
 
 	<div class="contenedor">
 		<h5>Nº DE DOCUMENTO:</h5>
-		<h5 class="datos">{{$ticket->documento}}</h5>
+		<p style="font-size: 20px;" class="datos">{{$ticket->documento}}</p>
 		<h5>ORDEN DE SERVICIO:</h5>
-		<h5 class="datos">{{$ticket->codigo}}</h5>
+		<p style="font-size: 20px;" class="datos">{{$ticket->codigo}}</p>
 	</div>
 
 	<footer class="piepagina">
