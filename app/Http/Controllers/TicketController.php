@@ -82,7 +82,7 @@ class TicketController extends Controller
             'ticket' => $ticket
         ])->setPaper(array(0, 0, 170, 170), 'portrait');
 
-        return $pdf->download($ticket->orden_de_servicio . ".pdf");
+        return $pdf->stream($ticket->orden_de_servicio . ".pdf");
     }
 
     public function consulta()

@@ -48,7 +48,8 @@
                                         </div>
                                     </div>
                                     <p class="text-end">
-                                        <button type="button" wire:click="$emit('consultar')" class="btn btn-primary">Consultar</button>
+                                        <button type="button" wire:click="$emit('consultar')"
+                                            class="btn btn-primary">Consultar</button>
                                     </p>
                                     <!-- Text input-->
                                     <div class="">
@@ -84,7 +85,12 @@
                                     <p class="text-end">
                                         <button type="submit" id="singlebutton" name="singlebutton"
                                             class="btn btn-primary">Cargar Archivos</button>
+                                        @if ($filesUploaded)
+                                            <button type="button" wire:click="$emit('cargaCompleta')"
+                                                class="btn btn-primary">Carga Completa</button>
+                                        @endif
                                     </p>
+
                                     <p class="text-center">
                                         <a href="{{ url('/') }}" class="btn btn-primary">Regresar</a>
                                     </p>

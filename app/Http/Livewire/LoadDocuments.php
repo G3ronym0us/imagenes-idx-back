@@ -33,7 +33,8 @@ class LoadDocuments extends Component
         'code.alpha_num' => 'El Codigo debe ser solo alfanumerico!!',
     ];
 
-    protected $listeners = ['consultar' => 'consultarDocumentos'];
+    protected $listeners = ['consultar' => 'consultarDocumentos',
+    'cargaCompleta' => 'cargaCompleted'];
 
     public function save()
     {
@@ -72,6 +73,12 @@ class LoadDocuments extends Component
         } else {
             $this->addError('error', 'El Documento y Codigo no coinciden!');
         }
+    }
+
+    public function cargaCompleted()
+    {
+        $this->addError('mensaje', 'Los documentos del ticket han sido cargados completamente!');
+
     }
 
     public function render()

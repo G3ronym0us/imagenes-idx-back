@@ -66,7 +66,7 @@
 	</style>
 </head>
 <body>
-	{{-- <img class="imagen" src="{{ asset('logo.png'); }}" width="100%" height="20px"> --}}
+	<img class="imagen" src="{{ asset('logo.png'); }}" width="100%" height="20px">
 
 	<div class="contenedor">
 		<h5>Nº DE DOCUMENTO:</h5>
