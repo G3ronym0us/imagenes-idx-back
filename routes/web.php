@@ -27,5 +27,5 @@ Route::get('/tickets/show/{ticket}', [TicketController::class, 'show'])->name('t
 
 // documentos
 Route::get('/documentos', [DocumentController::class, 'index'])->name('documents.index');
-Route::get('/resultados', [DocumentController::class, 'results'])->name('documents.index');
+Route::get('/resultados', [DocumentController::class, 'results'])->name('documents.results');
 Route::post('/documentos',[DocumentController::class, 'store'])->name('documentos.subirarchivos');

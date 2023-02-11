@@ -39,18 +39,21 @@ class DownloadDocuments extends Component
 
             $files = Document::where('numeroDocumento', $this->documentNumber)->where('codigo', $this->code)->get();
 
+            if (count($files) > 0) {
+                $zip_file = "results-{$ticket->documento}-{$ticket->codigo}.zip";
+                $zip = new \ZipArchive();
+                $zip->open($zip_file, \ZipArchive::CREATE | \ZipArchive::OVERWRITE);
 
-            $zip_file = "results-{$ticket->documento}-{$ticket->codigo}.zip";
-            $zip = new \ZipArchive();
-            $zip->open($zip_file, \ZipArchive::CREATE | \ZipArchive::OVERWRITE);
+                foreach ($files as $file) {
+                    $path = storage_path("app/{$file->ruta}");
+                    $zip->addFile($path, $file->ruta);
+                }
 
-            foreach ($files as $file) {
-                $path = storage_path("app/{$file->ruta}");
-                $zip->addFile($path, $file->ruta);
+                $zip->close();
+                return response()->download($zip_file);
+            }else{
+                $this->addError('error', 'Este ticket no tiene documentos!');
             }
-
-            $zip->close();
-            return response()->download($zip_file);
         } else {
             $this->addError('error', 'El Documento y Codigo no coinciden!');
         }
