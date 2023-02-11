@@ -66,7 +66,7 @@
 	</style>
 </head>
 <body>
-	<img class="imagen" src="{{ public_path('storage/logo.png') }}" width="100%" height="20px">
+	<img class="imagen" src="https://i.postimg.cc/sggbG96w/logo.png" width="100%" height="20px">
 
 	<div class="contenedor">
 		<h5>Nº DE DOCUMENTO:</h5>
