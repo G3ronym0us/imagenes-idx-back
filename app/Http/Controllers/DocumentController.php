@@ -12,7 +12,7 @@ use App\Models\Archivo;
 class DocumentController extends Controller
 {
     /**
-     * Display a liting of the resource.
+     * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
