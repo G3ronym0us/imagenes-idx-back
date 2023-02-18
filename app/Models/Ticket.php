@@ -15,12 +15,12 @@ class Ticket extends Model
      */
     //protected $table = 'tickets';
 
-    /** 
+    /**
      * si solo quieres utilizar created_at debes asignarle a updated_at el valor de null
     */
     //const UPDATED_AT = null;
 
-    /** 
+    /**
      * no utilizar los campos created_at y updated_at
     */
     //public $timestamps = false;
@@ -37,4 +37,8 @@ class Ticket extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
+
+    public function status(){
+        return $this->belongsToMany(Status::class, 'histories', 'ticket_id', 'status_id')->withPivot('user_id')->withTimestamps();
+    }
 }

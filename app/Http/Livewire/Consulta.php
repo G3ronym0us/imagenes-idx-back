@@ -9,6 +9,7 @@ use Livewire\Component;
 class Consulta extends Component
 {
     public $documento;
+    public $currentTicket;
 
     //
     protected $listeners = ['padrefiltroconsulta' => 'cargardatos'];
@@ -23,7 +24,7 @@ class Consulta extends Component
         $tickets = [];
 
         if (!empty($this->documento)) {
-            $tickets = Ticket::where('documento', $this->documento)->get();
+            $tickets = Ticket::where('documento', $this->documento)->orderBy('created_at', 'DESC')->get();
 
 
             if (count($tickets) < 1) {
@@ -34,5 +35,9 @@ class Consulta extends Component
         return view('livewire.consulta', [
             'tickets' => $tickets
         ]);
+    }
+
+    public function selectTicket($id){
+        return redirect("/tickets/details/{$id}");
     }
 }

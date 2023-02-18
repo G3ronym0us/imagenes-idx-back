@@ -46,7 +46,7 @@ class DownloadDocuments extends Component
 
                 foreach ($files as $file) {
                     $path = storage_path("app/{$file->ruta}");
-                    $zip->addFile($path, $file->ruta);
+                    $zip->addFile($path, $file->name);
                 }
 
                 $zip->close();

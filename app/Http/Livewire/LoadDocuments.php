@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use App\Models\Document;
 use App\Models\Ticket;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 use Validator;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -13,7 +14,8 @@ class LoadDocuments extends Component
 {
     use WithFileUploads;
 
-    public $files;
+    public $file;
+    public $files = [];
     public $documentNumber;
     public $code;
     public $filesUploaded;
@@ -33,8 +35,20 @@ class LoadDocuments extends Component
         'code.alpha_num' => 'El Codigo debe ser solo alfanumerico!!',
     ];
 
-    protected $listeners = ['consultar' => 'consultarDocumentos',
-    'cargaCompleta' => 'cargaCompleted'];
+    protected $listeners = [
+        'consultar'     => 'consultarDocumentos',
+        'cargaCompleta' => 'cargaCompleted',
+        'add-file'     => 'addFile'
+    ];
+
+    public function addFile()
+    {
+        if(!is_array($this->file)) return;
+        foreach($this->file as $file){
+            array_push($this->files, $file);
+        }
+        $this->file = null;
+    }
 
     public function save()
     {
@@ -44,7 +58,7 @@ class LoadDocuments extends Component
         $ticket = Ticket::where('documento', $this->documentNumber)->where('codigo', $this->code)->first();
         if ($ticket) {
             foreach ($this->files as $file) {
-                $url = $file->store('documents');
+                $url = $file->storeAs('documents');
                 Document::create([
                     'numeroDocumento'   => $this->documentNumber,
                     'codigo'            => $this->code,
@@ -52,7 +66,7 @@ class LoadDocuments extends Component
                     'name'              => $file->getClientOriginalName()
                 ]);
             }
-            $this->files = null;
+            $this->files = [];
             $this->filesUploaded = Document::where('numeroDocumento', $this->documentNumber)->where('codigo', $this->code)->get();
             $this->addError('mensaje', 'El o los archivos han sido subido con exito!');
         } else {
@@ -78,7 +92,6 @@ class LoadDocuments extends Component
     public function cargaCompleted()
     {
         $this->addError('mensaje', 'Los documentos del ticket han sido cargados completamente!');
-
     }
 
     public function render()
@@ -88,4 +101,16 @@ class LoadDocuments extends Component
             ['files' => $this->files, 'documentNumber' => $this->documentNumber, 'code' => $this->code]
         );
     }
+
+    public function deleteFile($index){
+        array_splice($this->files, $index, 1);
+    }
+
+    public function deleteFileUploaded($id, $index){
+        $document = Document::find($id);
+        Storage::delete($document->ruta);
+        $document->delete();
+        $this->filesUploaded = Document::where('numeroDocumento', $this->documentNumber)->where('codigo', $this->code)->get();
+    }
+
 }

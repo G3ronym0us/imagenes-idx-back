@@ -1,8 +1,8 @@
-<x-layout>
+<x-app-layout>
 
     <br><br>
     <livewire:load-documents />
 
 
 
-</x-layout>
+</x-app-layout>

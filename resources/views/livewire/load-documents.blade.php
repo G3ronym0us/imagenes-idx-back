@@ -55,7 +55,7 @@
                                     <div class="">
                                         <div class="mb-3">
                                             <label for="archivos">Archivos</label>
-                                            <input wire:model="files" type="file" multiple
+                                            <input wire:model="file" type="file" multiple
                                                 class="form-control input-md">
                                             @error('files')
                                                 <span class="text-danger"> {{ $message }} </span>
@@ -64,19 +64,33 @@
                                         <div>
                                             @if ($filesUploaded)
                                                 <h4>Archivos Cargados:</h4>
-                                                <ul>
-                                                    @foreach ($filesUploaded as $file)
-                                                        <li>{{ $file->name }}</li>
+                                                <p>
+                                                    @foreach ($filesUploaded as $index => $file)
+                                                        <p>
+                                                            <img src="{{ asset('icons/file-earmark-arrow-up.svg') }}">
+                                                            <span>{{ $file->name }}</span>
+                                                            <img src="{{ asset('icons/file-earmark-x.svg') }}" wire:click="deleteFileUploaded({{ $file->id }}, {{ $index }})">
+                                                        </p>
                                                     @endforeach
-                                                </ul>
+                                                </p>
+                                            @endif
+                                            @if ($file)
+                                                <?php $this->emit('add-file'); ?>
                                             @endif
                                             @if ($files)
                                                 <h4>Nuevos Archivos:</h4>
-                                                <ul>
-                                                    @foreach ($files as $file)
-                                                        <li>{{ $file->getClientOriginalName() }}</li>
+                                                <p>
+                                                    @foreach ($files as $index => $file)
+                                                        <p>
+                                                            <img src="{{ asset('icons/file-earmark-arrow-up.svg') }}"
+                                                                class="inline-flex" style="margin-right: 20px">
+                                                            <spanclass="inline-flex"
+                                                                style="margin-right: 30px">{{ $file->getClientOriginalName() }}</spanclass=>
+                                                            <img class="inline-flex" src="{{ asset('icons/file-earmark-x.svg') }}"
+                                                                wire:click="deleteFile({{ $index }} )">
+                                                        </p>
                                                     @endforeach
-                                                </ul>
+                                                </p>
                                             @endif
                                         </div>
                                     </div>

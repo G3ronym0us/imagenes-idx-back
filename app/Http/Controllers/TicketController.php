@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Status;
 use App\Models\Ticket;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
@@ -64,6 +65,9 @@ class TicketController extends Controller
         $ticket->codigo = $request->input("codigo");
         $ticket->orden_de_servicio = $randomString;
         $ticket->save();
+
+        $status = Status::where('order',1)->first();
+        $ticket->status()->attach($status->id);
 
         return redirect()->route('ticket.show', [
             'ticket' => $ticket,
