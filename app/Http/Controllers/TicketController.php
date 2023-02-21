@@ -6,6 +6,7 @@ use App\Models\Status;
 use App\Models\Ticket;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Validator;
 
 class TicketController extends Controller
@@ -67,7 +68,7 @@ class TicketController extends Controller
         $ticket->save();
 
         $status = Status::where('order',1)->first();
-        $ticket->status()->attach($status->id);
+        $ticket->status()->attach($status->id, ['user_id' => Auth::id()]);
 
         return redirect()->route('ticket.show', [
             'ticket' => $ticket,
