@@ -4,7 +4,7 @@
             <p class="text-center">{{ session('errorconsulta') }}</p>
         </div>
     @endif
-
+    <livewire:patient.register />
     <livewire:filtrarconsulta />
 
     <table class="table table-striped">
