@@ -9,6 +9,7 @@
             </div>
         </div>
         <div class="row">
+            @role(['Administrator', 'Worker'])
             <div class="col-md-4">
                 <div class="card">
                     <img src="{{ asset('descarga.jpeg') }}" class="card-img-top" alt="...">
@@ -20,6 +21,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="col-md-4">
                 <div class="card">
                     <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrU9OxUToi6tQGIN9d8k0YVDJyHUzoaWrAIg&usqp=CAU"
@@ -32,6 +34,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="col-md-4">
                 <div class="card">
                     <img src="http://aupe.org.uy/web/wp-content/uploads/2013/08/Curso-2-2013-opcion-grande.jpg"
@@ -44,6 +47,19 @@
                     </div>
                 </div>
             </div>
+            @endrole
+            @role('Medico')
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="{{ asset('descarga.jpeg') }}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Ver Resultados</h5>
+                        <p class="card-text">Visualice los resultados en nuestro visualizador</p>
+                        <a href="{{ route('doctor.results') }}" class="btn btn-primary">Ver Ahora!</a>
+                    </div>
+                </div>
+            </div>
+            @endrole
         </div>
     </div>
 </x-app-layout>

@@ -13,6 +13,7 @@ class CreateUser extends Component
     public $email;
     public $password;
     public $password_confirmation;
+    public $role;
 
     protected $rules = [
         'firstname' => 'required|string',
@@ -20,6 +21,7 @@ class CreateUser extends Component
         'email' => 'required|email',
         'password' => 'required|confirmed:password_confirmation',
         'password_confirmation' => 'required',
+        'role' => 'required',
     ];
 
     protected $messages =  [
@@ -31,6 +33,7 @@ class CreateUser extends Component
         'password.required' => 'La contraseña es requerida',
         'password.confirmed' => 'La contraseña deben coincidir',
         'password_confirmation.required' => 'La confirmacion de contraseña es requerida!',
+        'role.required' => 'El rol es requerido!',
     ];
 
 
@@ -50,7 +53,7 @@ class CreateUser extends Component
             'password' => Hash::make($this->password),
         ]);
 
-        $user->assignRole('Worker');
+        $user->assignRole($this->role);
 
         return redirect('/users');
     }

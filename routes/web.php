@@ -5,6 +5,7 @@ use App\Http\Controllers\TicketController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Livewire\CreateUser;
 use App\Http\Livewire\EditUser;
+use App\Http\Livewire\SeeResults;
 use App\Http\Livewire\TicketDetail;
 use App\Http\Livewire\Users;
 
@@ -26,7 +27,7 @@ Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
-    'role:Administrator|Worker',
+    'role:Administrator|Worker|Medico',
 ])->group(function () {
     Route::get('/', function () {
         return view('welcome');
@@ -40,6 +41,10 @@ Route::middleware([
 
     Route::prefix('tickets')->group(function (){
         Route::get('/details/{id}', TicketDetail::class)->name('ticket.detail');
+    });
+
+    Route::prefix('doctor')->group(function (){
+        Route::get('/results', SeeResults::class)->name('doctor.results');
     });
 
     Route::get('/tickets/new', [TicketController::class, 'create'])->name('ticket.new');

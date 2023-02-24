@@ -4,6 +4,41 @@
             <p class="text-center">{{ session('errorconsulta') }}</p>
         </div>
     @endif
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        Asignar Cita
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Asignar Cita</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    @error('success')
+                        <div class="alert alert-success">
+                            <p class="text-center">{{ $message }}</p>
+                        </div>
+                    @enderror
+                    <form wire:submit.prevent="assignDate" class="need-validation">
+                        <div class="form-group">
+                            <label for="">Documento</label>
+                            <input type="text" class="form-control" wire:model.defer="document">
+                            @error('document')
+                                <span class="text-danger"> {{ $message }} </span>
+                            @enderror
+                        </div>
+                        <div class="form-group text-center mt-4">
+                            <button class="btn btn-primary btn-sm">Asignar Cita</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <livewire:filtrarconsulta />
 
@@ -20,7 +55,7 @@
             @forelse ($tickets as $data)
                 <tr>
                     <td>{{ $data->codigo }}</td>
-                    <td>{{ $data->created_at }}</td>
+                    <td>{{ $data->status->firstWhere('pivot.created_at', $data->status->max('pivot.created_at'))->pivot->updated_at }}</td>
                     <td>{{ $data->status->firstWhere('pivot.created_at', $data->status->max('pivot.created_at'))->name }}
                     </td>
                     <td>
@@ -50,9 +85,9 @@
             </div>
             <div class="modal-body">
                 <p>Documento:
-                @if ($currentTicket)
-                     {{ $currentTicket->documento }}
-                @endif
+                    @if ($currentTicket)
+                        {{ $currentTicket->documento }}
+                    @endif
                 </p>
             </div>
             <div class="modal-footer">
