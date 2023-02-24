@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row pt-5">
     <div class="col-md-8 offset-md-2">
         <div class="card">
             <div class="card-header">
@@ -25,7 +25,7 @@
                                     <tr>
                                         <td>{{ $data->name }}</td>
                                         <td>{{ $data->user->email }}</td>
-                                        <td>{{ $data->pivot->created_at }}</td>
+                                        <td>{{ $data->pivot->updated_at }}</td>
                                     </tr>
                                 @empty
                                     <tr>
@@ -36,7 +36,16 @@
                         </table>
                         <p class="text-center">
                             @if($nextStatus)
-                            <button type="button" class="btn btn-primary" wire:click="changeStatus({{$nextStatus->id}})">{{ $nextStatus->name }}</button>
+                                <button type="button" class="btn btn-primary" wire:click="changeStatus({{$nextStatus->id}})">{{ $nextStatus->name }}</button>
+                            @endif
+                            @if($firstStatus)
+                                <button type="button" class="btn btn-primary" wire:click="reassignStatus()">Reasignar Cita</button>
+                            @endif
+                            @if($transcription == null && $transcriptionStatus)
+                                <button type="button" class="btn btn-primary" wire:click="changeStatus({{ $transcriptionStatus->id }})">{{ $transcriptionStatus->visible_name }}</button>
+                            @endif
+                            @if($load == null && $loadStatus)
+                                <button type="button" class="btn btn-primary" wire:click="changeStatus({{ $loadStatus->id }})">{{ $loadStatus->name }}</button>
                             @endif
                         </p>
                         <p class="text-center">

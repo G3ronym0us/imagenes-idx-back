@@ -50,6 +50,14 @@
                                 @enderror
                             </div>
 
+                            <div class="col-md-12 mt-2 mb-4">
+                                <x-label for="role" value="{{ __('Role') }}" />
+                                <select wire:model="role" class="form-select">
+                                    <option value="Worker">Administrador</option>
+                                    <option value="Medico">Médico</option>
+                                </select>
+                            </div>
+
                             <div class="text-center mt-3 mb-3">
                                 <x-button class="ml-4">
                                     {{ __('Crear Usuario') }}
