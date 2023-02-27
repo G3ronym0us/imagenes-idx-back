@@ -58,8 +58,6 @@ class DocumentController extends Controller
             'codigo.alpha_num'=>'El Codigo debe ser solo alfanumerico!!',
         ]);
 
-        //$conteofile = is_array($request->file('archivos')) ? count($request->file('archivos')) : 0;
-        //if ( $request->hasFile('archivos') || $conteofile > 1 )
         if ( $request->hasFile('archivos') )
         {
             $arrayaux = null;

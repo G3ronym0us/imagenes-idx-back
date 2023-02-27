@@ -8,7 +8,7 @@ class Filtrarconsulta extends Component
 {
     public $documento;
 
-    /** 
+    /**
      * valida pero deja pasar a consultar el dato
     */
     /* public function updatedDocumento()
@@ -21,11 +21,11 @@ class Filtrarconsulta extends Component
     public function filtrarconsultas()
     {
         $campos = [
-            'documento' => 'required|integer',
+            'documento' => 'required|alpha_num',
         ];
         $msj = [
             'documento.required'=>'El Numero de Documento no puede estar vacio!!',
-            'documento.integer'=>'El Numero de Documento debe ser solo numeros!!',
+            'documento.alpha_num'=>'El Numero de Documento debe ser solo alphanumerico!!',
         ];
 
         $this->validate($campos,$msj);
