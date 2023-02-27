@@ -46,7 +46,7 @@ class CreateUser extends Component
         return view('livewire.create-user');
     }
 
-    public function mount($id)
+    public function mount()
     {
         $this->roles = Role::all();
     }
