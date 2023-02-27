@@ -2,8 +2,10 @@
 
 namespace App\Http\Livewire;
 
+use App\Mail\NewUser;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 
 class CreateUser extends Component
@@ -54,6 +56,8 @@ class CreateUser extends Component
         ]);
 
         $user->assignRole($this->role);
+
+        Mail::to($user->email)->send(new NewUser($user, $this->role));
 
         return redirect('/users');
     }
