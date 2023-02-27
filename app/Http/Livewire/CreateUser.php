@@ -6,6 +6,7 @@ use App\Mail\NewUser;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Spatie\Permission\Models\Role;
 use Livewire\Component;
 
 class CreateUser extends Component
@@ -16,6 +17,7 @@ class CreateUser extends Component
     public $password;
     public $password_confirmation;
     public $role;
+    public $roles;
 
     protected $rules = [
         'firstname' => 'required|string',
@@ -42,6 +44,11 @@ class CreateUser extends Component
     public function render()
     {
         return view('livewire.create-user');
+    }
+
+    public function mount($id)
+    {
+        $this->roles = Role::all();
     }
 
     public function save()

@@ -53,8 +53,9 @@
                             <div class="col-md-12 mt-2 mb-4">
                                 <x-label for="role" value="{{ __('Role') }}" />
                                 <select wire:model="role" class="form-select">
-                                    <option value="Worker">Administrador</option>
-                                    <option value="Medico">Médico</option>
+                                    @foreach ($roles as $role)
+                                        <option value="{{ $role->name }}">{{ $role->name }}</option>
+                                    @endforeach
                                 </select>
                             </div>
 
