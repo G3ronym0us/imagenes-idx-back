@@ -24,7 +24,9 @@
 <body class="font-sans antialiased h-100">
     <x-banner />
 
-    <div class="min-h-screen h-100 mx-0" style="background-image: url('{{ asset('fondo.png') }}'); background-position: center; background-size: cover;">
+    <div class="min-h-screen h-100 mx-0"
+        {{-- style="background-image: url('{{ asset('fondo.png') }}'); background-position: center; background-size: cover;" --}}
+        >
         @livewire('navigation-menu')
 
         <!-- Page Heading -->
