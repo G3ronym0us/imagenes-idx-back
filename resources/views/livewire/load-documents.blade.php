@@ -5,9 +5,6 @@
                 <h3 class="text-center">Subir archivos de resultados</h2>
             </div>
             <div class="card-body">
-                {{-- <div class="alert alert-danger">
-                    <p class="text-center">{{session('errorconsulta')}}</p>
-                </div> --}}
                 <div class="row justify-content-center align-items-center">
 
                     <div class="col-md-12">
@@ -53,13 +50,21 @@
                                     </p>
                                     <!-- Text input-->
                                     <div class="">
-                                        <div class="mb-3">
+                                        <div class="mb-3" x-data="{ isUploading: false, progress: 0 }"
+                                            x-on:livewire-upload-start="isUploading = true"
+                                            x-on:livewire-upload-finish="isUploading = false"
+                                            x-on:livewire-upload-error="isUploading = false"
+                                            x-on:livewire-upload-progress="progress = $event.detail.progress"
+                                        >
                                             <label for="archivos">Archivos</label>
                                             <input wire:model="file" type="file" multiple
                                                 class="form-control input-md">
                                             @error('files')
                                                 <span class="text-danger"> {{ $message }} </span>
                                             @enderror
+                                            <div class="progress" x-show="isUploading">
+                                                <div class="progress-bar" role="progressbar" x-bind:style="`width: ${progress}%`" x-bind:aria-valuenow="`${progress}`" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
                                         </div>
                                         <div>
                                             @if ($filesUploaded)
