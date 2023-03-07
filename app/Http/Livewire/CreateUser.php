@@ -55,7 +55,7 @@ class CreateUser extends Component
     {
         $this->validate();
 
-        $token = Hash::make(uniqid(rand(), true));
+        $token = uniqid(rand(), true);
 
         $user = User::create([
             'firstname' => $this->firstname,
