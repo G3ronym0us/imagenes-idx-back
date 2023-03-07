@@ -22,11 +22,11 @@ class NewUser extends Mailable
      *
      * @return void
      */
-    public function __construct($user, $role)
+    public function __construct($user, $role, $url)
     {
         $this->user = $user;
         $this->role = $role;
-        $this->url = 'http://back-idx.herokuapp.com/';
+        $this->url = $url;
     }
 
     /**

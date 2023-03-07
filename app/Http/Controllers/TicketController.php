@@ -67,9 +67,6 @@ class TicketController extends Controller
         $ticket->orden_de_servicio = $randomString;
         $ticket->save();
 
-        $status = Status::where('order',1)->first();
-        $ticket->status()->attach($status->id, ['user_id' => Auth::id()]);
-
         return redirect()->route('ticket.show', [
             'ticket' => $ticket,
         ]);

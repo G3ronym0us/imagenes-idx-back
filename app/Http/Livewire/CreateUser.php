@@ -55,16 +55,19 @@ class CreateUser extends Component
     {
         $this->validate();
 
+        $token = Hash::make(uniqid(rand(), true));
+
         $user = User::create([
             'firstname' => $this->firstname,
             'lastname' => $this->lastname,
             'email' => $this->email,
             'password' => Hash::make($this->password),
+            'remember_token' => $token
         ]);
 
         $user->assignRole($this->role);
 
-        Mail::to($user->email)->send(new NewUser($user, $this->role));
+        Mail::to($user->email)->send(new NewUser($user, $this->role, url("password/set/{$token}")));
 
         return redirect('/users');
     }

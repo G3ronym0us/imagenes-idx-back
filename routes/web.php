@@ -7,6 +7,7 @@ use App\Http\Livewire\CreateUser;
 use App\Http\Livewire\EditUser;
 use App\Http\Livewire\SeeResults;
 use App\Http\Livewire\TicketDetail;
+use App\Http\Livewire\User\PasswordSet;
 use App\Http\Livewire\Users;
 
 /*
@@ -20,8 +21,8 @@ use App\Http\Livewire\Users;
 |
 */
 
-
-
+Route::get('/resultados', [DocumentController::class, 'results'])->name('documents.results');
+Route::get('/password/set/{token}', PasswordSet::class)->name('set.password');
 
 Route::middleware([
     'auth:sanctum',
@@ -54,7 +55,6 @@ Route::middleware([
 
     // documentos
     Route::get('/documentos', [DocumentController::class, 'index'])->name('documents.index');
-    Route::get('/resultados', [DocumentController::class, 'results'])->name('documents.results');
     Route::post('/documentos', [DocumentController::class, 'store'])->name('documentos.subirarchivos');
 });
 

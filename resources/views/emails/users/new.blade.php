@@ -3,7 +3,7 @@
 Has sido registrado como {{ $role }} asignado en Imágenes Diagnósticas S.A.S.<br>
 Ingresa y configura tu contraseña para poder iniciar:
 <br>
-<x-mail::button :url="'{{ $url }}'">
+<x-mail::button :url="$url">
 Configurar contraseña
 </x-mail::button>
 
