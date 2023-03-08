@@ -9,7 +9,7 @@
             </div>
         </div>
         <div class="row">
-            @role(['Administrator', 'Especialista', 'Recepcionista', 'Transcriptor', 'Tecnólogo', 'Call Center'])
+            @role(['Administrator', 'Recepcionista', 'Transcriptor', 'Tecnólogo', 'Call Center'])
                 <div class="col-md-4">
                     <div class="card">
                         <img src="{{ asset('descarga.jpeg') }}" class="card-img-top" alt="...">

@@ -28,7 +28,7 @@ Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
-    'role:Administrator|Worker|Medico',
+    'role:Administrator|Recepcionista|Transcriptor|Tecnólogo|Call Center|Especialista',
 ])->group(function () {
     Route::get('/', function () {
         return view('welcome');
