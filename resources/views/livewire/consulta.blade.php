@@ -55,8 +55,8 @@
             @forelse ($tickets as $data)
                 <tr>
                     <td>{{ $data->codigo }}</td>
-                    <td>{{ $data->status->firstWhere('pivot.created_at', $data->status->max('pivot.created_at'))->pivot->updated_at }}</td>
-                    <td>{{ $data->status->firstWhere('pivot.created_at', $data->status->max('pivot.created_at'))->name }}
+                    <td>{{ $data->status ? $data->status->firstWhere('pivot.created_at', $data->status->max('pivot.created_at'))->pivot->updated_at : null}}</td>
+                    <td>{{ $data->status ? $data->status->firstWhere('pivot.created_at', $data->status->max('pivot.created_at'))->name : null}}
                     </td>
                     <td>
                         <button class="btn btn-primary" wire:click="selectTicket({{ $data->id }})">Ver</button>
