@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Document;
 use App\Models\Ticket;
+use App\Http\Traits\ManagerFileS3;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Validator;
@@ -12,7 +13,7 @@ use Livewire\WithFileUploads;
 
 class LoadDocuments extends Component
 {
-    use WithFileUploads;
+    use WithFileUploads, ManagerFileS3;
 
     public $file;
     public $files = [];
@@ -58,7 +59,7 @@ class LoadDocuments extends Component
         $ticket = Ticket::where('documento', $this->documentNumber)->where('codigo', $this->code)->first();
         if ($ticket) {
             foreach ($this->files as $file) {
-                $url = $file->storeAs('documents');
+                $url = $this->UploadFile($file);
                 Document::create([
                     'numeroDocumento'   => $this->documentNumber,
                     'codigo'            => $this->code,
@@ -108,7 +109,7 @@ class LoadDocuments extends Component
 
     public function deleteFileUploaded($id, $index){
         $document = Document::find($id);
-        Storage::delete($document->ruta);
+        $this->DeleteFileS3($document);
         $document->delete();
         $this->filesUploaded = Document::where('numeroDocumento', $this->documentNumber)->where('codigo', $this->code)->get();
     }
