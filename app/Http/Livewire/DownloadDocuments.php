@@ -4,10 +4,12 @@ namespace App\Http\Livewire;
 
 use App\Models\Document;
 use App\Models\Ticket;
+use App\Http\Traits\ManagerFileS3;
 use Livewire\Component;
 
 class DownloadDocuments extends Component
 {
+    use ManagerFileS3;
 
     public $documentNumber;
     public $code;
@@ -31,7 +33,6 @@ class DownloadDocuments extends Component
 
     public function save()
     {
-
         $this->validate();
 
         $ticket = Ticket::where('documento', $this->documentNumber)->where('codigo', $this->code)->first();
@@ -45,8 +46,8 @@ class DownloadDocuments extends Component
                 $zip->open($zip_file, \ZipArchive::CREATE | \ZipArchive::OVERWRITE);
 
                 foreach ($files as $file) {
-                    $path = storage_path("app/{$file->ruta}");
-                    $zip->addFile($path, $file->name);
+                    $path = $this->GetPathS3($file);
+                    $zip->addFromString($file->name, $path);
                 }
 
                 $zip->close();
