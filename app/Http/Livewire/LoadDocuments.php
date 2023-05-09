@@ -2,9 +2,13 @@
 
 namespace App\Http\Livewire;
 
+use App\Http\Services\FileServerService;
 use App\Models\Document;
 use App\Models\Ticket;
 use App\Http\Traits\ManagerFileS3;
+use Illuminate\Http\Client\RequestException;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Validator;
@@ -44,8 +48,8 @@ class LoadDocuments extends Component
 
     public function addFile()
     {
-        if(!is_array($this->file)) return;
-        foreach($this->file as $file){
+        if (!is_array($this->file)) return;
+        foreach ($this->file as $file) {
             array_push($this->files, $file);
         }
         $this->file = null;
@@ -58,18 +62,54 @@ class LoadDocuments extends Component
 
         $ticket = Ticket::where('documento', $this->documentNumber)->where('codigo', $this->code)->first();
         if ($ticket) {
-            foreach ($this->files as $file) {
-                $url = $this->UploadFile($file);
-                Document::create([
-                    'numeroDocumento'   => $this->documentNumber,
-                    'codigo'            => $this->code,
-                    'ruta'              => $url,
-                    'name'              => $file->getClientOriginalName()
+
+            try {
+                foreach ($this->files as $index => $file) {
+                    $url[] = [
+                        "url[{$index}]",
+                        $file->getRealPath(),
+                        $file->getClientOriginalName()
+                    ];
+                }
+                $fileServer = new FileServerService();
+                $request = Http::withHeaders([
+                    'Authorization' => $fileServer->token,
                 ]);
+                foreach ($this->files as $index => $file) {
+                    $uploadedFile = new UploadedFile(
+                        $file->getRealPath(), // Ruta real del archivo
+                        $file->getClientOriginalName(), // Nombre original del archivo
+                        $file->getClientMimeType(), // Tipo de MIME del archivo
+                        null, // Tamaño del archivo (en bytes) - se dejará a cargo de Laravel
+                        true // true si se quiere guardar el archivo temporalmente en el disco local, false en caso contrario
+                    );
+                    $request->attach(
+                        "url[{$index}]",
+                        file_get_contents($uploadedFile),
+                        $file->getClientOriginalName(),
+                        [
+                            'Content-Type' => $file->getClientMimeType()
+                        ]
+                    );
+                }
+                $response = $request->post('http://181.143.216.68/api/files', [
+                    'client' => $this->documentNumber,
+                ]);
+                $responseObject = $response->object();
+                foreach ($responseObject->data as $key => $file) {
+                    Document::create([
+                        'numeroDocumento'   => $this->documentNumber,
+                        'codigo'            => $this->code,
+                        'ruta'              => $file->url,
+                        'name'              => $file->fileName
+                    ]);
+                }
+                $this->files = [];
+                $this->filesUploaded = Document::where('numeroDocumento', $this->documentNumber)->where('codigo', $this->code)->get();
+                $this->addError('mensaje', 'El o los archivos han sido subido con exito!');
+            } catch (\Exception $e) {
+                dd($e->getMessage());
             }
-            $this->files = [];
-            $this->filesUploaded = Document::where('numeroDocumento', $this->documentNumber)->where('codigo', $this->code)->get();
-            $this->addError('mensaje', 'El o los archivos han sido subido con exito!');
         } else {
             $this->addError('error', 'El Documento y Codigo no coinciden!');
         }
@@ -103,15 +143,16 @@ class LoadDocuments extends Component
         );
     }
 
-    public function deleteFile($index){
+    public function deleteFile($index)
+    {
         array_splice($this->files, $index, 1);
     }
 
-    public function deleteFileUploaded($id, $index){
+    public function deleteFileUploaded($id, $index)
+    {
         $document = Document::find($id);
         $this->DeleteFileS3($document);
         $document->delete();
         $this->filesUploaded = Document::where('numeroDocumento', $this->documentNumber)->where('codigo', $this->code)->get();
     }
-
 }
